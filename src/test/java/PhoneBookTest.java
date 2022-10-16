@@ -1,3 +1,5 @@
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -6,12 +8,17 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PhoneBookTest {
     PhoneBook phoneBook;
+
+
 
     @BeforeEach
     void setUp() {
@@ -67,5 +74,20 @@ class PhoneBookTest {
         phoneBook.add(name1, number1);
         phoneBook.add(name2, number2);
         Assertions.assertEquals(expected, phoneBook.findByName(name1));
+    }
+
+    public static Stream<Arguments> sourcePrintNames() {
+        return Stream.of(
+                Arguments.of(List.of("Вася, Петя"), "Вася", "+7(905) 968-12-25", "Петя", "+7(905) 978-12-25"),
+                Arguments.of(List.of("Вася"), "Вася", "+7(905) 968-12-25", "Вася", "+7(905) 978-12-25")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("sourcePrintNames")
+    void printAllNames(List<String> names, String name1, String number1, String name2, String number2 ) {
+        phoneBook.add(name1, number1);
+        phoneBook.add(name2, number2);
+        MatcherAssert.assertThat(names, Matchers.contains(phoneBook.printAllNames()));
     }
 }
