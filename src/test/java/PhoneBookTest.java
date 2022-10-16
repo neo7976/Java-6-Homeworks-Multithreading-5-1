@@ -78,7 +78,8 @@ class PhoneBookTest {
 
     public static Stream<Arguments> sourcePrintNames() {
         return Stream.of(
-                Arguments.of(List.of("Вася, Петя"), "Вася", "+7(905) 968-12-25", "Петя", "+7(905) 978-12-25"),
+                Arguments.of(List.of("Вася", "Петя"), "Вася", "+7(905) 968-12-25", "Петя", "+7(905) 978-12-25"),
+                Arguments.of(List.of("Вася", "Петя"), "Петя", "+7(905) 978-12-25", "Вася", "+7(905) 968-12-25"),
                 Arguments.of(List.of("Вася"), "Вася", "+7(905) 968-12-25", "Вася", "+7(905) 978-12-25")
         );
     }
@@ -88,6 +89,6 @@ class PhoneBookTest {
     void printAllNames(List<String> names, String name1, String number1, String name2, String number2 ) {
         phoneBook.add(name1, number1);
         phoneBook.add(name2, number2);
-        MatcherAssert.assertThat(names, Matchers.contains(phoneBook.printAllNames()));
+        MatcherAssert.assertThat(names, Matchers.is(phoneBook.printAllNames()));
     }
 }

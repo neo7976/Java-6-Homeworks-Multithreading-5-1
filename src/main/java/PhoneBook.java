@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -23,6 +24,10 @@ public class PhoneBook {
 
 
     public List<String> printAllNames() {
-        return null;
+        List<String> list = new ArrayList<>();
+        for (Map.Entry<String, String> entry : phone.entrySet()) {
+            list.add(entry.getKey());
+        }
+        return list;
     }
 }
